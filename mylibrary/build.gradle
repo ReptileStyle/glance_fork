@@ -20,6 +20,7 @@ plugins {
 //    id("AndroidXPlugin")
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id('maven-publish')
 //    id("AndroidXComposePlugin")
 }
 
@@ -97,7 +98,18 @@ android {
     resourcePrefix "glance_"
     namespace "androidx.glance"
 }
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.kuzevanov'
+            artifactId = 'glance'
+            version = "1.0"
 
+
+
+        }
+    }
+}
 //androidx {
 //    name = "Glance"
 //    type = LibraryType.PUBLISHED_LIBRARY
