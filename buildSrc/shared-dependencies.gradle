@@ -1,0 +1,65 @@
+// This file applies dependencies common to projects in buildSrc
+
+
+
+apply from: "${buildscript.sourceFile.parent}/kotlin-dsl-dependency.gradle"
+
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+}
+dependencies {
+
+    // Gradle APIs
+    implementation(gradleApi())
+    compileOnly(findGradleKotlinDsl())
+
+    // Android Gradle Plugin APIs used by Stable AIDL
+    implementation("com.android.tools.build:gradle-api:7.0.4")
+
+    // Plugins we use and configure
+    implementation("com.google.dagger:hilt-android-gradle-plugin:2.44")
+    implementation("com.android.tools:common:31.1.0-beta02") // for com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+    implementation("com.android.tools:repository:31.1.0-beta02") // com.android.repository for Stable AIDL plugin
+    implementation("com.android.tools:sdk-common:31.1.0-beta02") // com.android.ide.common for Stable AIDL plugin
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21")
+    implementation("org.spdx:spdx-gradle-plugin:0.1.0")
+
+    // variety of json parsers
+    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.googlecode.json-simple:json-simple:1.1")
+
+    // XML parsers used in MavenUploadHelper.kt
+    implementation("org.dom4j:dom4j:2.1.3") {
+        // Optional dependency where Ivy fails to parse the POM file.
+        exclude(group:"net.java.dev.msv", module:"xsdlib")
+    }
+    implementation("xerces:xercesImpl:2.12.0")
+
+    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.1") // used by BundleInsideHelper.kt
+    implementation("org.apache.ant:ant:1.10.11") // used in AarManifestTransformerTask.kt for unziping
+    implementation("org.tomlj:tomlj:1.0.0")
+    implementation("commons-io:commons-io:2.4") // used in CheckApiEquivalenceTask.kt
+    implementation("com.jakewharton.dex:dex-member-list:4.1.1") // used in ReportLibraryMetricsTask.kt
+
+    implementation("com.google.protobuf:protobuf-gradle-plugin:0.9.3") // needed to compile inspection plugin
+    implementation("com.squareup:kotlinpoet:1.12.0") // needed to compile material-icon-generator
+    implementation("xmlpull:xmlpull:1.1.3.1") // needed to compile material-icon-generator
+
+    implementation("com.google.protobuf:protobuf-java:3.21.8") // needed to compile baseline-profile gradle plugins
+    implementation("com.google.testing.platform:core-proto:0.0.8-alpha08") // needed to compile baseline-profile gradle plugins
+
+    // dependencies that aren't used by buildSrc directly but that we resolve here so that the
+    // root project doesn't need to re-resolve them and their dependencies on every build
+    runtimeOnly("com.google.dagger:hilt-android-gradle-plugin:2.4.4")
+    runtimeOnly("com.squareup:kotlinpoet-javapoet:1.12.0") // for hiltAndroidGradlePluginz to workaround https://github.com/google/dagger/issues/3068
+    runtimeOnly("com.google.devtools.ksp:symbol-processing-gradle-plugin:1.8.20-1.0.11")
+    runtimeOnly("com.squareup.wire:wire-gradle-plugin:4.5.1")
+}

@@ -17,11 +17,11 @@
 //import androidx.build.LibraryType
 
 plugins {
-//    id("AndroidXPlugin")
+    id("AndroidXPlugin")
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id('maven-publish')
-//    id("AndroidXComposePlugin")
+    id("AndroidXComposePlugin")
 }
 
 dependencies {
